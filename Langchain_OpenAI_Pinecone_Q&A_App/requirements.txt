@@ -8,3 +8,4 @@ pinecone
 tiktoken
 docx2txt
 pypdf
+streamlit
