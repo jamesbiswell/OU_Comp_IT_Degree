@@ -2,7 +2,9 @@
 
 - This repository contains the learning materials for the level 2 and 3 modules.
 
-- It also contains a LangChain, OpenAI and Pinecone Q&A App (as a Jupyter Notebook) to create and then query the knowledge base.
+- It also contains a Jupyter Notebook using LangChain, OpenAI and Pinecone to create (and test querying) the knowledge base that is stored in Pinecone.
+
+- The Streamlit RAG Q&A App provides a simple GUI to interact with the knowledge base.
 
 ### Module Summary:
 
