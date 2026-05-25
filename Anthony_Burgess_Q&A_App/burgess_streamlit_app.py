@@ -1,5 +1,5 @@
 # using the terminal, run this file like so:
-# streamlit run streamlit_app.py
+# streamlit run burgess_streamlit_app.py
 
 # .env files are not included in the repository for security reasons (as specified
 # in the .gitignore file), so create your own .env file with the following content:
@@ -19,8 +19,8 @@ from langchain_community.vectorstores import Pinecone as LangChainPinecone
 from langchain_openai import OpenAIEmbeddings
 from pinecone import Pinecone
 
-index_name = "ou-comp-it-degree"
-namespace = "ou-comp-it-degree"
+index_name = "anthony-burgess-rag"
+namespace = "anthony-burgess-rag"
 
 
 @st.cache_resource
@@ -75,12 +75,12 @@ def ask_and_get_answer(q):
 vector_store = load_vector_store()
 
 st.set_page_config(
-    page_title="RAG Q&A App",
+    page_title="Anthony Burgess RAG Q&A App",
     page_icon="",
     layout="wide",
 )
 
-st.title("RAG Q&A App")
+st.title("Anthony Burgess RAG Q&A App")
 st.write("Ask questions and get answers (from the provided context only).")
 
 if "history" not in st.session_state:
