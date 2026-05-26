@@ -1,7 +1,7 @@
 openai
 langchain
 langchain-openai
-langchain-community
+langchain-community==0.4.1
 python-dotenv
 pinecone
 tiktoken

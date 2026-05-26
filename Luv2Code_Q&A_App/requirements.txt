@@ -1,7 +1,10 @@
 openai
+opencv-python
 langchain
 langchain-openai
 langchain-community==0.4.1
+langchain-pymupdf4llm
+pymupdf4llm
 python-dotenv
 pinecone
 tiktoken
