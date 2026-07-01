@@ -11,8 +11,11 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv(), override=True)
 
 import streamlit as st
+from typing import List, Any
 
 # Import LangChain/OpenAI/Pinecone libraries
+from langchain_core.retrievers import BaseRetriever
+from langchain_core.documents import Document
 from langchain_classic.chains.retrieval_qa.base import RetrievalQA
 from langchain_openai import ChatOpenAI
 from langchain_community.vectorstores import Pinecone as LangChainPinecone
@@ -21,6 +24,19 @@ from pinecone import Pinecone
 
 index_name = "ou-comp-it-degree"
 namespace = "ou-comp-it-degree"
+
+
+class PineconeRetrieverWithScore(BaseRetriever):
+    vector_store: Any
+    search_kwargs: dict
+
+    def _get_relevant_documents(self, query: str, *, run_manager: Any = None) -> List[Document]:
+        docs_and_scores = self.vector_store.similarity_search_with_score(query, **self.search_kwargs)
+        # Explicitly sort by score in descending order (highest similarity first)
+        docs_and_scores.sort(key=lambda x: x[1], reverse=True)
+        for doc, score in docs_and_scores:
+            doc.metadata["score"] = score
+        return [doc for doc, score in docs_and_scores]
 
 
 @st.cache_resource
@@ -52,8 +68,8 @@ def load_qa_chain():
         temperature=0,
     )
 
-    retriever = vector_store.as_retriever(
-        search_type="similarity",
+    retriever = PineconeRetrieverWithScore(
+        vector_store=vector_store,
         search_kwargs={"k": 10},
     )
 
@@ -81,7 +97,7 @@ st.set_page_config(
 )
 
 st.title("OU Computing & IT Degree RAG Q&A App")
-st.write("Ask questions and get answers (from the provided context only).")
+st.write("Ask questions and get answers (from the Pinecone context only).")
 
 if "history" not in st.session_state:
     st.session_state.history = []
@@ -124,8 +140,15 @@ for display_index, answer in enumerate(reversed(st.session_state.history), start
             source = doc.metadata.get("source", "Unknown document")
             page_label = doc.metadata.get("page_label")
             page = doc.metadata.get("page")
+            score = doc.metadata.get("score")
 
-            with st.expander(f"Reference {index}: {source}"):
+            expander_label = f"Reference {index}: {source}"
+            if score is not None:
+                expander_label = f"Reference {index} (Score: {score:.4f}): {source}"
+
+            with st.expander(expander_label):
                 st.write(f"**Document:** {source}")
                 st.write(f"**Page label:** {page_label}")
                 st.write(f"**Page index:** {page}")
+                if score is not None:
+                    st.write(f"**Similarity Score:** {score:.4f}")

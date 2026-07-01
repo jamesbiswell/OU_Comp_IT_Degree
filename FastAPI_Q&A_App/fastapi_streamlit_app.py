@@ -97,7 +97,7 @@ st.set_page_config(
 )
 
 st.title("FastAPI RAG Q&A App")
-st.write("Ask questions and get answers (from the provided context only).")
+st.write("Ask questions and get answers (from the Pinecone context only).")
 
 if "history" not in st.session_state:
     st.session_state.history = []
