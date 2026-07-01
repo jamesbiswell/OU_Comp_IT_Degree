@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.util.DebugLogger;
 import org.springframework.ai.document.Document;
 import org.junit.jupiter.api.Test;
 import java.io.File;
@@ -12,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DocumentServiceTest {
 
-    private final DocumentService documentService = new DocumentService();
+    private final DebugLogger debugLogger = new DebugLogger();
+    private final DocumentService documentService = new DocumentService(debugLogger);
 
     @Test
     void testLoadAndChunkTxt() throws IOException {
@@ -67,6 +69,15 @@ class DocumentServiceTest {
         
         // Verify it matches expected hash for "test.pdf|0|test content"
         // (Manual verification of the logic)
+        
+        // page_label check
+        Document docPageLabel = new Document("id", "content", Map.of("source", "s", "page_label", "5"));
+        String idPageLabel = documentService.generateId(docPageLabel);
+        
+        Document docNoPageLabel = new Document("id", "content", Map.of("source", "s"));
+        String idNoPageLabel = documentService.generateId(docNoPageLabel);
+        
+        assertNotEquals(idPageLabel, idNoPageLabel);
         
         // Variation check
         Document doc2 = new Document("initial-id", "different content", Map.of(

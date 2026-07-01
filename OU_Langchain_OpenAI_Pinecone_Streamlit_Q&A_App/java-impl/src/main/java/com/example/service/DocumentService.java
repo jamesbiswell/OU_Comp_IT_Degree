@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.util.DebugLogger;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.ExtractedTextFormatter;
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
@@ -18,7 +19,13 @@ import java.util.List;
 
 @Service
 public class DocumentService {
-
+    
+    private final DebugLogger debugLogger;
+    
+    public DocumentService(DebugLogger debugLogger) {
+        this.debugLogger = debugLogger;
+    }
+    
     public List<Document> loadAndChunk(File file) {
         List<Document> documents;
         String fileName = file.getName().toLowerCase();
@@ -34,6 +41,10 @@ public class DocumentService {
                             .withPagesPerDocument(1)
                             .build());
             documents = pdfReader.get();
+            // Debugging metadata
+            if (!documents.isEmpty()) {
+                debugLogger.log("[DEBUG_LOG] Metadata from first page of " + file.getName() + ": " + documents.get(0).getMetadata());
+            }
         } else if (fileName.endsWith(".docx") || fileName.endsWith(".txt")) {
             TikaDocumentReader tikaReader = new TikaDocumentReader(new FileSystemResource(file));
             documents = tikaReader.get();
@@ -52,8 +63,15 @@ public class DocumentService {
         // - its document source, page, page number and chunk text
         
         String source = String.valueOf(chunk.getMetadata().getOrDefault("source", "unknown"));
-        String page = String.valueOf(chunk.getMetadata().getOrDefault("page_number", 
-                      chunk.getMetadata().getOrDefault("page", "0")));
+        // Use page_number or page, and fall back to page_label if both are missing
+        Object pageObj = chunk.getMetadata().get("page_number");
+        if (pageObj == null) {
+            pageObj = chunk.getMetadata().get("page");
+        }
+        if (pageObj == null) {
+            pageObj = chunk.getMetadata().get("page_label");
+        }
+        String page = String.valueOf(pageObj != null ? pageObj : "0");
         String content = chunk.getContent();
         
         String idText = String.format("%s|%s|%s", source, page, content);

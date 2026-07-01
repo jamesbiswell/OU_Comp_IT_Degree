@@ -76,13 +76,30 @@ public class AppRunner implements CommandLineRunner {
                                 // Spring AI PineconeVectorStore expects the content to be available in metadata "text" field
                                 chunk.getMetadata().put("text", chunk.getContent());
                                 
-                                // Use normalised path as source
-                                String sourcePath = file.getAbsolutePath().replace("\\", "/");
-                                chunk.getMetadata().putIfAbsent("source", sourcePath);
+                                // Use normalised path as source: folder/filename
+                                String sourcePath = folderName + "/" + file.getName();
+                                chunk.getMetadata().put("source", sourcePath);
                                 
                                 // Ensure page information is present
-                                chunk.getMetadata().putIfAbsent("page", 0);
-                                chunk.getMetadata().putIfAbsent("page_number", 0);
+                                // We check if they exist first, so we don't overwrite extracted data with 0
+                                Object pageNum = chunk.getMetadata().get("page_number");
+                                if (pageNum == null) {
+                                    pageNum = chunk.getMetadata().get("page");
+                                }
+                                
+                                if (pageNum != null) {
+                                    chunk.getMetadata().put("page", pageNum);
+                                    chunk.getMetadata().put("page_number", pageNum);
+                                } else {
+                                    chunk.getMetadata().putIfAbsent("page", 0);
+                                    chunk.getMetadata().putIfAbsent("page_number", 0);
+                                }
+                                
+                                // Also ensure page_label is at least initialized if missing
+                                if (chunk.getMetadata().get("page_label") == null) {
+                                    Object label = pageNum != null ? String.valueOf(pageNum) : "0";
+                                    chunk.getMetadata().put("page_label", label);
+                                }
                                 
                                 // Safety defaults for other fields
                                 chunk.getMetadata().putIfAbsent("distance", 0.0);
@@ -134,7 +151,10 @@ public class AppRunner implements CommandLineRunner {
                     Document doc = sourceDocs.get(j);
                     String source = (String) doc.getMetadata().getOrDefault("source", "Unknown document");
                     Object pageLabel = doc.getMetadata().get("page_label");
-                    Object page = doc.getMetadata().get("page");
+                    Object page = doc.getMetadata().get("page_number");
+                    if (page == null) {
+                        page = doc.getMetadata().get("page");
+                    }
                     Double distance = (Double) doc.getMetadata().getOrDefault("distance", 0.0);
                     double score = 1.0 - distance;
 
