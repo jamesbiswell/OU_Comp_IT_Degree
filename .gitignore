@@ -12,6 +12,9 @@ env/
 # PyCharm
 .idea/
 
+# Junie
+.junie/
+
 # Environment variables
 .env
 
@@ -28,4 +31,3 @@ htmlcov/
 /Anthony_Burgess_Docs/
 /Luv2Code_Docs/
 /FastAPI_Docs/
-/FastAPI_Q&A_App/
