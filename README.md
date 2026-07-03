@@ -1,7 +1,5 @@
 ## OU Degree - Computing & IT
 
----
-
 - This repository contains the learning materials for the level 2 and 3 modules.
 
 - It also contains a Jupyter Notebook using Python, LangChain, OpenAI and Pinecone to create (and test querying) the knowledge base that is stored in Pinecone.
