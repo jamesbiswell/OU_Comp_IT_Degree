@@ -1,5 +1,5 @@
 # using the terminal, run this file like so:
-# streamlit run som_esp_streamlit_app.py
+# streamlit run som_soft_eng_streamlit_app.py
 
 # .env files are not included in the repository for security reasons (as specified
 # in the .gitignore file), so create your own .env file with the following content:
@@ -22,8 +22,8 @@ from langchain_community.vectorstores import Pinecone as LangChainPinecone
 from langchain_openai import OpenAIEmbeddings
 from pinecone import Pinecone
 
-index_name = "som-esp-rag"
-namespace = "som-esp-rag"
+index_name = "som-soft-eng-rag"
+namespace = "som-soft-eng-rag"
 
 
 class PineconeRetrieverWithScore(BaseRetriever):
@@ -91,12 +91,12 @@ def ask_and_get_answer(q):
 vector_store = load_vector_store()
 
 st.set_page_config(
-    page_title="Somerville Engineering Software Products RAG Q&A App",
+    page_title="Somerville Software Engineering RAG Q&A App",
     page_icon="",
     layout="wide",
 )
 
-st.title("Somerville Engineering Software Products RAG Q&A App")
+st.title("Somerville Software Engineering RAG Q&A App")
 st.write("Ask questions and get answers (from the Pinecone context only).")
 
 if "history" not in st.session_state:
