@@ -29,11 +29,12 @@
 
 - Ian Sommerville: Engineering Software Products
 - Ian Sommerville: Software Engineering
+- FastAPI: The Complete Course
 - Luv2Code Courses
-  - Spring Boot 4 REST APIs: Building Modern REST APIs
-  - Spring Boot Unit Testing with JUnit, Mockito and MockMvc
-  - Master Java Design Patterns
-  - Java Playwright: Master Web Test Automation
   - Full Stack: Angular and Java Spring Boot
   - Full Stack: React and Java Spring Boot
-- FastAPI: The Complete Course
+  - Java Playwright: Master Web Test Automation
+  - Java Selenium WebDriver: Master Web Test Automation
+  - Master Java Design Patterns
+  - Spring Boot 4 REST APIs: Building Modern REST APIs
+  - Spring Boot Unit Testing with JUnit, Mockito and MockMvc
