@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: An AWS Serverless Application Model (SAM) template describing your function.
+Resources:
+  demoserverlessfunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - x86_64
+      CodeUri: ./src
+      Description: ''
+      EphemeralStorage:
+        Size: 512
+      Handler: lambda_function.lambda_handler
+      LoggingConfig:
+        LogFormat: Text
+        LogGroup: /aws/lambda/demo-serverless-function
+      MemorySize: 128
+      PackageType: Zip
+      RecursiveLoop: Terminate
+      Runtime: python3.14
+      RuntimeManagementConfig:
+        UpdateRuntimeOn: Auto
+      SnapStart:
+        ApplyOn: None
+      Tags: {}
+      Timeout: 3
+      Tracing: PassThrough
+      Events:
+        Trigger1Event:
+          Type: HttpApi
+          Properties:
+            Method: ANY
+            Path: /demo

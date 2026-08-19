@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template reconstructed from CloudTrail RunInstances event log for DemoWalkthroughEC2Instance.'
+
+Resources:
+  DemoWalkthroughEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      # Core Configuration
+      ImageId: 'ami-01c952cfc86b7870d'
+      InstanceType: 't3.micro'
+      KeyName: 'DemoWalkthroughEC2InstanceKeyPair'
+      EbsOptimized: true
+
+      # Placement and Performance
+      AvailabilityZone: 'eu-west-2c'
+      CreditSpecification:
+        CPUCredits: 'unlimited'
+
+      # Network Configurations
+      NetworkInterfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: true
+          SubnetId: 'subnet-09f255b2e0c8ee3bb'
+          GroupSet:
+            - 'sg-0d523d80f423d26f8' # launch-wizard-6
+          DeleteOnTermination: true
+
+      # Security & Metadata Options (IMDSv2 Enforced)
+      MetadataOptions:
+        HttpTokens: 'required'
+        HttpPutResponseHopLimit: 2
+        HttpEndpoint: 'enabled'
+        InstanceMetadataTags: 'disabled'
+
+      # DNS Configurations
+      PrivateDnsNameOptions:
+        HostnameType: 'ip-name'
+        EnableResourceNameDnsARecord: true
+        EnableResourceNameDnsAAAARecord: false
+
+      # Resource Tags
+      Tags:
+        - Key: 'Name'
+          Value: 'DemoWalkthroughEC2Instance'

@@ -1,0 +1,42 @@
+AWSConfigurationTemplateVersion: 1.1.0.0
+EnvironmentConfigurationMetadata:
+  DateCreated: '1786370766000'
+  DateModified: '1786370766000'
+Platform:
+  PlatformArn: arn:aws:elasticbeanstalk:eu-west-2::platform/Python 3.14 running on
+    64bit Amazon Linux 2023/4.13.5
+OptionSettings:
+  aws:elasticbeanstalk:sns:topics:
+    Notification Endpoint: jamesbiswell@aol.com
+  aws:elasticbeanstalk:cloudwatch:logs:
+    StreamLogs: false
+  aws:elasticbeanstalk:environment:
+    ServiceRole: arn:aws:iam::028664612012:role/service-role/aws-elasticbeanstalk-service-role
+    EnvironmentType: SingleInstance
+    LoadBalancerType: application
+  aws:elasticbeanstalk:healthreporting:system:
+    ConfigDocument:
+      Version: 1
+      CloudWatchMetrics:
+        Instance: {}
+        Environment: {}
+      Rules:
+        Environment:
+          ELB:
+            ELBRequests4xx:
+              Enabled: true
+          Application:
+            ApplicationRequests4xx:
+              Enabled: true
+    SystemType: basic
+  aws:ec2:vpc:
+    Subnets: subnet-053aacfbdd55d6052,subnet-09f255b2e0c8ee3bb,subnet-09cd95dd6db9327b4
+    VPCId: vpc-062868cd8a4b87505
+  aws:autoscaling:launchconfiguration:
+    DisableIMDSv1: true
+    IamInstanceProfile: aws-elasticbeanstalk-ec2-role
+  aws:elasticbeanstalk:managedactions:
+    ManagedActionsEnabled: false
+EnvironmentTier:
+  Type: Standard
+  Name: WebServer

@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  # The IAM Role required for S3 to perform the replication
+  S3ReplicationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: s3.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: S3ReplicationPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetReplicationConfiguration
+                  - s3:ListBucket
+                Resource: arn:aws:s3:::your-source-bucket-name
+              - Effect: Allow
+                Action:
+                  - s3:GetObjectVersionForReplication
+                  - s3:GetObjectVersionAcl
+                  - s3:GetObjectVersionTagging
+                Resource: arn:aws:s3:::your-source-bucket-name/*
+              - Effect: Allow
+                Action:
+                  - s3:ReplicateObject
+                  - s3:ReplicateDelete
+                  - s3:ReplicateTags
+                Resource: arn:aws:s3:::your-destination-bucket-name/*
+
+  # Source S3 Bucket with the Replication Rule configured
+  SourceBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: your-source-bucket-name
+      VersioningConfiguration:
+        Status: Enabled # Versioning must be enabled for replication
+      ReplicationConfiguration:
+        Role: !GetAtt S3ReplicationRole.Arn
+        Rules:
+          - Id: MyReplicationRule
+            Status: Enabled
+            Priority: 1
+            Filter:
+              Prefix: "documents/" # Replicates objects only inside this prefix
+            Destination:
+              Bucket: arn:aws:s3:::your-destination-bucket-name
+              StorageClass: STANDARD

@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Metadata:
+  AWSToolsMetrics:
+    IaC_Generator: arn:aws:cloudformation:eu-west-2:012345678901:generatedTemplate/de1a9978-1240-4b45-85ce-0311da2a54c9
+Resources:
+  ApiGatewayV2Api:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      IpAddressType: ipv4
+      RouteSelectionExpression: $request.method $request.path
+      DisableExecuteApiEndpoint: false
+      ProtocolType: HTTP
+      Tags: {}
+      Name: demo-serverless-api-gateway
+  ApiGatewayV2Deployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    Properties:
+      ApiId: jkr0fwr7sa
+      Description: Automatic deployment triggered by changes to the Api configuration
+  ApiGatewayV2Route:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      Target: integrations/rfa06qo
+      RequestModels: {}
+      AuthorizationScopes: []
+      ApiKeyRequired: false
+      RouteKey: ANY /demo
+      AuthorizationType: NONE
+      ApiId: jkr0fwr7sa
+  ApiGatewayV2Integration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      IntegrationUri: arn:aws:lambda:eu-west-2:012345678901:function:demo-serverless-function
+      PayloadFormatVersion: 2.0
+      ConnectionType: INTERNET
+      RequestTemplates: {}
+      ResponseParameters: {}
+      TimeoutInMillis: 30000
+      ApiId: jkr0fwr7sa
+      IntegrationMethod: POST
+      IntegrationType: AWS_PROXY

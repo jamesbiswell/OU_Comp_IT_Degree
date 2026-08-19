@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+#---
+#Metadata:
+#  AWSToolsMetrics:
+#    IaC_Generator: "arn:aws:cloudformation:eu-west-2:012345678901:generatedTemplate/65f88653-17b8-4284-be34-85132787a5d3"
+Resources:
+  DynamoDBTable:
+    UpdateReplacePolicy: "Retain"
+    Type: "AWS::DynamoDB::Table"
+    DeletionPolicy: "Retain"
+    Properties:
+      SSESpecification:
+        SSEEnabled: false
+      TableName: "demo-dynamodb-table-students"
+      AttributeDefinitions:
+      - AttributeType: "N"
+        AttributeName: "demo-partition-key-name-student-id"
+      - AttributeType: "S"
+        AttributeName: "demo-sort-key-name-student-name"
+      ContributorInsightsSpecification:
+        Enabled: false
+      BillingMode: "PAY_PER_REQUEST"
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: false
+      WarmThroughput:
+        ReadUnitsPerSecond: 12000
+        WriteUnitsPerSecond: 4000
+      KeySchema:
+      - KeyType: "HASH"
+        AttributeName: "demo-partition-key-name-student-id"
+      - KeyType: "RANGE"
+        AttributeName: "demo-sort-key-name-student-name"
+      DeletionProtectionEnabled: false
+      TableClass: "STANDARD"
+      Tags: []
+      TimeToLiveSpecification:
+        Enabled: false

@@ -1,0 +1,21 @@
+-- First Query
+
+CREATE DATABASE demo;
+
+-- Second Query
+
+CREATE EXTERNAL TABLE demo.students (
+  id INT,
+  name STRING,
+  score INT
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+  'separatorChar'=',',
+  'quoteChar'='"'
+)
+LOCATION 's3://<YOUR_BUCKET_NAME>/'
+TBLPROPERTIES ('skip.header.line.count'='1');
+
+
+SELECT * FROM demo.students;

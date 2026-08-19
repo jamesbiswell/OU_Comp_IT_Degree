@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create a simple VPC with one subnet
+
+Resources:
+  DemoVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: DemoVPC
+
+  DemoSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref DemoVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      Tags:
+        - Key: Name
+          Value: DemoSubnet
+
+Outputs:
+  VPCId:
+    Value: !Ref DemoVPC
+    Description: VPC ID
+  SubnetId:
+    Value: !Ref DemoSubnet
+    Description: Subnet ID
