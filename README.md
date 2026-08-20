@@ -27,6 +27,7 @@
 
 ### Software Engineering
 
+- AWS Certified Cloud Practitioner
 - Ian Sommerville: Engineering Software Products
 - Ian Sommerville: Software Engineering
 - FastAPI: The Complete Course
