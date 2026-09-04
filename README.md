@@ -27,6 +27,7 @@
 
 ### Software Engineering
 
+- Apache Kafka
 - AWS Certified Cloud Practitioner
 - Ian Sommerville: Engineering Software Products
 - Ian Sommerville: Software Engineering
