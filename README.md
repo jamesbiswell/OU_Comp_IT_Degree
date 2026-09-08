@@ -32,6 +32,7 @@
 - Ian Sommerville: Engineering Software Products
 - Ian Sommerville: Software Engineering
 - FastAPI: The Complete Course
+- Kotlin
 - Luv2Code Courses
   - Full Stack: Angular and Java Spring Boot
   - Full Stack: React and Java Spring Boot
