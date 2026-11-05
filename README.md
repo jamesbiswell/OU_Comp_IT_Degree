@@ -29,6 +29,7 @@
 
 - Apache Kafka
 - AWS Certified Cloud Practitioner
+- AWS Certified AI Practitioner
 - Ian Sommerville: Engineering Software Products
 - Ian Sommerville: Software Engineering
 - FastAPI: The Complete Course
